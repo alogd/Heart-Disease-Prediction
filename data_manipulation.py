@@ -1,6 +1,10 @@
 import pandas as pd
 from pandas.core.frame import DataFrame
 from sklearn.preprocessing import StandardScaler
+from imblearn.over_sampling import RandomOverSampler
+from imblearn.under_sampling import RandomUnderSampler
+from sklearn.datasets import make_classification
+from collections import Counter
 StandardScaler = StandardScaler()  
 
 turn_to_dummies=['restecg']
@@ -30,11 +34,16 @@ def get_dataframe(columns):
     
     return df
 
-def get_columns_names():    
-    names=pd.read_csv("dataset.csv").columns
-    names=list(names)
-    names.remove('target')
-    return names
 
-    
+
+
+data=get_dataframe(['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal', 'target'])
+X= data.drop(['target'], axis=1)
+y= data['target']
+print(Counter(y))
+
+ros = RandomOverSampler()
+# resampling X, y
+X_ros, y_ros = ros.fit_resample(X, y)
+print(Counter(y_ros))
 
