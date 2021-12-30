@@ -7,10 +7,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LogisticRegression
-warnings.filterwarnings('ignore')
 lr=LogisticRegression()
 
-row_data = pd.read_csv('Dataset1.csv')
+row_data = pd.read_csv('dataset.csv')
 
 StandardScaler = StandardScaler()  
 
