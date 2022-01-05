@@ -6,10 +6,12 @@ from imblearn.under_sampling import RandomUnderSampler
 from sklearn.datasets import make_classification
 from collections import Counter
 StandardScaler = StandardScaler()  
+ros = RandomOverSampler()
+rus = RandomUnderSampler()
 
 turn_to_dummies=['restecg']
 
-def get_dataframe(columns):
+def get_dataframe(columns, sampling):
     #Open file and read data then drop not needed columns
     df=pd.read_csv("dataset.csv")
     for col in df.columns:
@@ -32,18 +34,27 @@ def get_dataframe(columns):
     
     df[columns_to_scale] = StandardScaler.fit_transform(df[columns_to_scale])
     
-    return df
+    #Sampling dataframe
+    X=df.drop(['target'], axis=1)
+    y=df['target']
+
+    X_sampled=X
+    y_sampled=y
+
+    if sampling=='oversampling':
+        X_sampled, y_sampled = ros.fit_resample(X, y)
+    elif sampling=='undersampling':
+        X_sampled, y_sampled = rus.fit_resample(X, y)
 
 
 
+    return X_sampled, y_sampled
 
-data=get_dataframe(['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal', 'target'])
-X= data.drop(['target'], axis=1)
-y= data['target']
+
+        
+'''
+wanted_columns=['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal', 'target']
+X,y=get_dataframe(wanted_columns, sampling='undersampling')
+
 print(Counter(y))
-
-ros = RandomOverSampler()
-# resampling X, y
-X_ros, y_ros = ros.fit_resample(X, y)
-print(Counter(y_ros))
-
+'''
