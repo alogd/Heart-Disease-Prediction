@@ -11,7 +11,7 @@ rus = RandomUnderSampler()
 
 turn_to_dummies=['restecg']
 
-def get_dataframe(columns, sampling):
+def get_dataframe(columns = ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal', 'target'], sampling = "",scale=1):
     #Open file and read data then drop not needed columns
     df=pd.read_csv("dataset.csv")
     for col in df.columns:
@@ -26,13 +26,14 @@ def get_dataframe(columns, sampling):
             df=pd.get_dummies(df,columns=[col])
     
     #Scale needed columns
-    columns_to_scale = ['age','trestbps','chol','thalach','oldpeak']
+    if scale == 1 :
+        columns_to_scale = ['age','trestbps','chol','thalach','oldpeak']
 
-    for col in columns_to_scale:
-        if col not in columns:
-            columns_to_scale=columns_to_scale.remove(col)
+        for col in columns_to_scale:
+            if col not in columns:
+                columns_to_scale=columns_to_scale.remove(col)
     
-    df[columns_to_scale] = StandardScaler.fit_transform(df[columns_to_scale])
+        df[columns_to_scale] = StandardScaler.fit_transform(df[columns_to_scale])
     
     #Sampling dataframe
     X=df.drop(['target'], axis=1)

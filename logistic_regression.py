@@ -19,7 +19,7 @@ row_data[columns_to_scale] = StandardScaler.fit_transform(row_data[columns_to_sc
 X= row_data.drop(['target'], axis=1)
 y= row_data['target']
 
-X_train, X_test,y_train, y_test=train_test_split(X,y,test_size=0.3,random_state=40)
+X_train, X_test,y_train, y_test=train_test_split(X,y,test_size=0.3)
 
 print('X_train-', X_train.size)
 print('X_test-',X_test.size)
