@@ -1,8 +1,10 @@
 
-from pandas.core.frame import DataFrame
+from scipy.sparse.construct import random
 from sklearn. feature_selection import mutual_info_classif
 from sklearn.feature_selection import SelectKBest, chi2
 from sklearn.feature_selection import f_classif
+from statistics import mean
+import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
@@ -13,95 +15,184 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import data_manipulation as dm
 
-#NA VROYME POS VLEPOYME POIA FEATURES EXOYN EPILEGEI META TO SELECTION 
-#NA GINEI MIA MORFOPOIHSH SAN TO LOGISTIC WRAPPER
-#MIA MIKRH PSAKTIKI GIA TA EMBEDDED METHODS
+# 1. NA VROYME POS VLEPOYME POIA FEATURES EXOYN EPILEGEI META TO SELECTION 
+# 2. NA GINEI MIA MORFOPOIHSH SAN TO LOGISTIC WRAPPER
+# 3. MIA MIKRH PSAKTIKI GIA TA EMBEDDED METHODS
+# 4. NA FTIAKSOYME METHODOYS GIA NA TSEKAROUME TA APOTELESMATA WSTE NA BROYME TO IDANIKO K KAI THRESHOLD GIA (ANOVA, CHI 2) & (THRESHOLD)
 
 
 
-'''
 #--------------------------------------------CHI 2--------------------------------
 
-wanted_columns=['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal', 'target']
-lr=LogisticRegression()
+print("\n\n CHI 2 Feature Selection \n")
+lr=LogisticRegression(max_iter=1000)
 
-X,y=dm.get_dataframe(wanted_columns, 'oversampling', 0)
+# we dont scale the record this time beacause chi2 method dont accept negative values (scale = 0 from data_manipulation)
+X,y=dm.get_dataframe(sampling = "oversampling", scale=1) 
+
+mean_value_per_k=[]
 
 
-X_train, X_test,y_train, y_test=train_test_split(X,y,test_size=0.3,random_state=40)
+# #We try all the values for k between 1 and 15 to find witch amount of best_features has the best accuracy
+for i in range(15) :
+    fvalue_selector = SelectKBest(chi2, k=(i+1))
 
-print(X.shape)
+    # Apply the SelectKBest object to the features and target
+    X_kbest = fvalue_selector.fit_transform(X, y)
 
-X_new = SelectKBest(chi2, k=7).fit_transform(X, y)
-print(X_new.head)
+    result_of_split=[]
+
+    for i in range(10):
+            X_train, X_test,y_train, y_test=train_test_split(X_kbest,y,test_size=0.3,random_state=i)
+            #We train the model 
+            model1=lr.fit(X_train,y_train)
+            prediction1=model1.predict(X_test)
+            #We save the score of eaxh training split
+            result_of_split.append(accuracy_score(y_test,prediction1))
+        
+    #we keep only the best score from the training splits with the same k
+    mean_value_per_k.append(mean(result_of_split))
+    print(mean(result_of_split))
+
+    
+#print(mean_value_per_k)
+
+max_acc=max(mean_value_per_k)
+print("max accuracy = " , max_acc , "with ", (mean_value_per_k.index(max_acc) + 1) ,  "features" )
+
+
+
+
+th_values=np.arange(0, 15, 1)
+max_acc=max(mean_value_per_k)
+#max_acc_pos=scores_record[0].index(max_acc)
+best_result=f'Max Accuracy: {round(max_acc,3)}  with {mean_value_per_k.index(max_acc) + 1} features with oversampling' 
+print(best_result)
+plt.plot(th_values, mean_value_per_k)
+plt.title(best_result)
+plt.suptitle('Number of Kbest Features CHI 2 method and Accuracy Coorelation')
+plt.xlabel('Features Number')
+plt.ylabel('Mean model accuracy for 100 different splits')
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
 
 '''
 
-
-
-'''
  #---------------------VARIANCE THRESHOLD---------------------------
-
-wanted_columns=['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal', 'target']
+print("\n\nVariance Feature Selection")
 lr=LogisticRegression()
-sel = VarianceThreshold(threshold=0.5)
-# na valoume ton tropo me ton opoio epilegei thn apolutow kauteri timi gia to threshold h test kathe score me
-#diafores times threshold
 
-X,y=dm.get_dataframe(wanted_columns, 'oversampling')
 
-X_train, X_test,y_train, y_test=train_test_split(X,y,test_size=0.3,random_state=40)
+for sampling in ['oversampling', 'undersampling']:
+    X,y=dm.get_dataframe(sampling=sampling)
+    #We try all the values for threshold between 0 and 1 with a 0.01 step 
+    currentThreshold=0
+    mean_value_per_threshold=[]
 
-print(X_train.shape, X_test.shape)
-print(X.shape)
+    while currentThreshold<=1:
+        sel = VarianceThreshold(threshold=currentThreshold)
+        currentThreshold+=0.01
+        result_of_split=[]
+        #We do 100 different splits and save the mean accuracy value
+        for i in range(10):
+            X_train, X_test,y_train, y_test=train_test_split(X,y,test_size=0.3,random_state=i)
+            sel.fit(X_train)
 
-sel.fit(X_train)
+            #We cut out the under threshold variables
+            X_train = sel.transform(X_train)
+            X_test = sel.transform(X_test)
+            #We train the model 
+            model1=lr.fit(X_train,y_train)
+            prediction1=model1.predict(X_test)
+            #We save the score 
+            result_of_split.append(accuracy_score(y_test,prediction1))
+        #Save result for this threshold value
+        mean_value_per_threshold.append(mean(result_of_split))
 
-model1=lr.fit(X_train,y_train)
-prediction1=model1.predict(X_test)
-#to score tou monteloy mas prin ginei h afairesh ton features
-print(accuracy_score(y_test,prediction1))
-
-# h metatroph ton feature sta ligotera 
-X_train = sel.transform(X_train)
-X_test = sel.transform(X_test)
-
-print(X_train.shape, X_test.shape)
-
-model1=lr.fit(X_train,y_train)
-prediction1=model1.predict(X_test)
-#to score tou monteloy me ta ligotera features meta thn afairesh me VARIANCE THRESHOLD
-print(accuracy_score(y_test,prediction1))
+    #Plot Threshold and Accuracy Coorelation and print best result 
+    th_values=np.arange(0.0, 1.0, 0.01)
+    max_acc=max(mean_value_per_threshold)
+    max_acc_pos=mean_value_per_threshold.index(max_acc)
+    best_result=f'Max Accuracy: {round(max_acc,3)}  at Threshold: {max_acc_pos/100} with {sampling}' 
+    print(best_result)
+    plt.plot(th_values, mean_value_per_threshold)
+    plt.title(best_result)
+    plt.suptitle('Threshold and Accuracy Coorelation')
+    plt.xlabel('Threshold Value')
+    plt.ylabel('Mean model accuracy for 100 different splits')
+    plt.show()
 '''
-
-
-
-
-
 
 
 '''
 #---------------------------------ANOVA----------------------------
 
-
-wanted_columns=['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal', 'target']
+print("\n\n ANOVA Feature Selection \n")
 lr=LogisticRegression()
 
-X,y=dm.get_dataframe(wanted_columns, 'oversampling')
+X,y=dm.get_dataframe(sampling = "oversampling")
 
 
-# Create an SelectKBest object to select features with two best ANOVA F-Values
-fvalue_selector = SelectKBest(f_classif, k=6)
+mean_value_per_k=[]
 
-# Apply the SelectKBest object to the features and target
-X_kbest = fvalue_selector.fit_transform(X, y)
+# #We try all the values for k between 1 and 15 to find witch amount of best_features has the best accuracy
+for i in range(15) :
+    fvalue_selector = SelectKBest(f_classif, k=(i+1))
+
+    # Apply the SelectKBest object to the features and target
+    X_kbest = fvalue_selector.fit_transform(X, y)
+
+    result_of_split=[]
+
+    for i in range(100):
+            X_train, X_test,y_train, y_test=train_test_split(X_kbest,y,test_size=0.3,random_state=i)
+            #We train the model 
+            model1=lr.fit(X_train,y_train)
+            prediction1=model1.predict(X_test)
+            #We save the score of eaxh training split
+            result_of_split.append(accuracy_score(y_test,prediction1))
+        
+    #we keep only the best score from the training splits with the same k
+    mean_value_per_k.append(mean(result_of_split))
+    print(mean(result_of_split))
+
+    
+#print(mean_value_per_k)
+
+max_acc=max(mean_value_per_k)
+print("max accuracy = " , max_acc , "with ", (mean_value_per_k.index(max_acc) + 1) ,  "features" )
 
 
-# View results
-print('Original number of features:', X.shape[1])
-print('Reduced number of features:', X_kbest.shape[1])
 
+
+th_values=np.arange(0, 15, 1)
+max_acc=max(mean_value_per_k)
+#max_acc_pos=scores_record[0].index(max_acc)
+best_result=f'Max Accuracy: {round(max_acc,3)}  with {mean_value_per_k.index(max_acc) + 1} features with oversampling' 
+print(best_result)
+plt.plot(th_values, mean_value_per_k)
+plt.title(best_result)
+plt.suptitle('Number of Kbest Features ANOVA method and Accuracy Coorelation')
+plt.xlabel('Features Number')
+plt.ylabel('Mean model accuracy for 100 different splits')
+plt.show()
 '''
+
+
+
+
+
 
 
 
