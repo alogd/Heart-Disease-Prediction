@@ -1,16 +1,14 @@
-import pandas as pd
 from mlxtend.feature_selection import ExhaustiveFeatureSelector as EFS
 from mlxtend.feature_selection import SequentialFeatureSelector as SFS
 from sklearn.linear_model import LogisticRegression
 import data_manipulation as dm
 
-wanted_columns=['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal', 'target']
 lr=LogisticRegression()
 
 
-X,y=dm.get_dataframe(wanted_columns, 'oversampling')
+X,y=dm.get_dataframe( sampling='Oversampling', scale="Standard")
 
-print('\n\nLogistic Regression Results:')
+print('\n\n====== Logistic Regression Results ======')
 
 #Step Forward Feature Selection / Wrapper
 sfs1 = SFS(LogisticRegression(),
@@ -19,10 +17,10 @@ sfs1 = SFS(LogisticRegression(),
          floating=False,
          cv=0)
 
-print("\nStep Forward Selection + Oversampling")
+print("\n=>Step Forward Selection + Oversampling ")
 sfs1.fit(X, y)
-print(sfs1.k_score_)
-print(sfs1.k_feature_names_)
+print('Accuracy:', sfs1.k_score_)
+print('Selected features:',sfs1.k_feature_names_)
 
 
 #Step Backward Feature Selection / Wrapper
@@ -32,10 +30,10 @@ sfs1 = SFS(LogisticRegression(),
          floating=False,
          cv=0)
 
-print("\nStep Backward Selection + Oversampling")
+print("\n=>Step Backward Selection + Oversampling ")
 sfs1.fit(X, y)
-print(sfs1.k_score_)
-print(sfs1.k_feature_names_)
+print('Accuracy:', sfs1.k_score_)
+print('Selected features:',sfs1.k_feature_names_)
 
 
 
@@ -45,17 +43,17 @@ efs = EFS(LogisticRegression(),
            max_features=3,
            scoring='accuracy',
            cv=2)
-print("\n\nExhaustive Selection + Oversampling")
+print("\n=>Exhaustive Selection + Oversampling ")
 
 efs.fit(X,y)
-print('\n',efs.best_score_)
-print(efs.best_feature_names_)
+print('Accuracy:',efs.best_score_)
+print('Selected features:',efs.best_feature_names_)
 
 
 
-#############################          Undersampling 
+##################          Undersampling 
 
-X,y=dm.get_dataframe(wanted_columns, 'undersampling')
+X,y=dm.get_dataframe(sampling='Undersampling', scale="Standard")
 
 #Step Forward Feature Selection / Wrapper
 sfs1 = SFS(LogisticRegression(),
@@ -63,10 +61,10 @@ sfs1 = SFS(LogisticRegression(),
          forward=True,
          floating=False,
          cv=0)
-print("\nStep Forward Selection + Undersampling")
+print("\n=>Step Forward Selection + Undersampling ")
 sfs1.fit(X, y)
-print(sfs1.k_score_)
-print(sfs1.k_feature_names_)
+print('Accuracy:', sfs1.k_score_)
+print('Selected features:',sfs1.k_feature_names_)
 
 
 #Step Backward Feature Selection / Wrapper
@@ -75,10 +73,10 @@ sfs1 = SFS(LogisticRegression(),
          forward=False,
          floating=False,
          cv=0)
-print("\nStep Backward Selection + Undersampling")
+print("\n=>Step Backward Selection + Undersampling")
 sfs1.fit(X, y)
-print(sfs1.k_score_)
-print(sfs1.k_feature_names_)
+print('Accuracy:', sfs1.k_score_)
+print('Selected features:',sfs1.k_feature_names_)
 
 
 
@@ -88,11 +86,12 @@ efs = EFS(LogisticRegression(),
            max_features=3,
            scoring='accuracy',
            cv=2)
-print("\n\nExhaustive Selection + Undersampling")
+print("\n=>Exhaustive Selection + Undersampling")
 
 efs.fit(X,y)
-print('\n',efs.best_score_)
-print(efs.best_feature_names_)
+print('Accuracy:',efs.best_score_)
+print('Selected features:',efs.best_feature_names_)
+
 
 
 

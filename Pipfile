@@ -9,6 +9,7 @@ sklearn = "*"
 seaborn = "*"
 mlxtend = "*"
 imblearn = "*"
+tqdm = "*"
 
 [dev-packages]
 
