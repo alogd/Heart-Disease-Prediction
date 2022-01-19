@@ -19,9 +19,9 @@ for sampling in ['Oversampling', 'Undersampling']:
 
     accuracy_per_C=[]
     max_acc=0
-    for C in range(1,20):
+    for C in range(1,50):
         #Find best features through Lasso method
-        selection = SelectFromModel(LogisticRegression(penalty='l1', C=C/20, solver='liblinear'))
+        selection = SelectFromModel(LogisticRegression(penalty='l1', C=C/50, solver='liblinear'))
         selection.fit(X, y)
         X_s=selection.transform(X)
 
@@ -44,15 +44,15 @@ for sampling in ['Oversampling', 'Undersampling']:
             best_features=X.columns.values[selection.get_support()]
 
     max_acc= max(accuracy_per_C)
-    C_best=(accuracy_per_C.index(max_acc)+1)/20
+    C_best=(accuracy_per_C.index(max_acc)+1)/50
     best_result=f'Max accuracy: {max_acc} at C= {C_best} with {sampling}'
     print('=>',best_result)
     print("Selected Features: ",best_features)
 
-    k_values=np.arange(0.05, 1, 0.05)
+    k_values=np.arange(0.02, 1, 0.02)
     plt.plot(k_values, accuracy_per_C)
     plt.title(best_result)
-    plt.suptitle('C and Accuracy Coorelation')
+    plt.suptitle('Lasso - C and Accuracy Coorelation')
     plt.xlabel('C value')
     plt.ylabel('Mean model accuracy for 100 different splits')
     plt.show()
@@ -65,9 +65,9 @@ for sampling in ['Oversampling', 'Undersampling']:
 
     accuracy_per_C=[]
     max_acc=0
-    for C in range(1,20):
+    for C in range(1,50):
         #Find best features through Lasso method
-        selection = SelectFromModel(LogisticRegression(penalty='l2', C=C/20))
+        selection = SelectFromModel(LogisticRegression(penalty='l2', C=C/50))
         selection.fit(X, y)
         X_s=selection.transform(X)
 
@@ -90,15 +90,15 @@ for sampling in ['Oversampling', 'Undersampling']:
             best_features=X.columns.values[selection.get_support()]
 
     max_acc= max(accuracy_per_C)
-    C_best=(accuracy_per_C.index(max_acc)+1)/20
+    C_best=(accuracy_per_C.index(max_acc)+1)/50
     best_result=f'Max accuracy: {max_acc} at C= {C_best} with {sampling}'
     print('=>',best_result)
     print("Selected Features: ",best_features)
 
-    k_values=np.arange(0.05, 1, 0.05)
+    k_values=np.arange(0.02, 1, 0.02)
     plt.plot(k_values, accuracy_per_C)
     plt.title(best_result)
-    plt.suptitle('C and Accuracy Coorelation')
+    plt.suptitle('Ridge - C and Accuracy Coorelation')
     plt.xlabel('C value')
     plt.ylabel('Mean model accuracy for 100 different splits')
     plt.show()
