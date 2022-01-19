@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import VarianceThreshold
 import numpy as np
 import matplotlib.pyplot as plt
-import data_manipulation as dm
+from ..data_manipulation import get_dataframe
 
 
 
@@ -21,7 +21,7 @@ lr=LogisticRegression(max_iter=1000)
 # we dont scale the record this time beacause chi2 method dont accept negative values (scale = 0 from data_manipulation)
 
 for sampling in ['Oversampling', 'Undersampling']:
-    X,y=dm.get_dataframe(sampling=sampling,scale="MinMax")
+    X,y=get_dataframe(sampling=sampling,scale="MinMax")
 
 
     mean_value_per_k=[]
@@ -66,7 +66,7 @@ for sampling in ['Oversampling', 'Undersampling']:
     plt.show()
 
 
-
+'''
 
 
 
@@ -179,7 +179,7 @@ for sampling in ['Oversampling', 'Undersampling']:
     plt.show()
     
 
-
+'''
 
 
 
