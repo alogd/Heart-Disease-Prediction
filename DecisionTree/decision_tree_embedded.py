@@ -1,5 +1,6 @@
 from statistics import mean
 from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier 
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import SelectFromModel
@@ -9,7 +10,7 @@ import numpy as np
 
 
 
-print("\n\n====== Logistic Regression with Embedded Methods Feature Selection ======")
+print("\n\n====== Decision Tree with Embedded Methods Feature Selection ======")
 
 #Lasso
 print("===>Lasso Results:")
@@ -31,9 +32,9 @@ for sampling in ['Oversampling', 'Undersampling']:
         for i in range(100):
             X_train, X_test,y_train, y_test=train_test_split(X_s,y,test_size=0.3,random_state=i)
             #print(X.columns.values[selection.get_support()])
-            lr=LogisticRegression()
+            dtc=DecisionTreeClassifier()
 
-            model1=lr.fit(X_train,y_train)
+            model1=dtc.fit(X_train,y_train)
             prediction1=model1.predict(X_test)
             #We save the score of each training split
             result_of_split.append(accuracy_score(y_test,prediction1))
@@ -80,9 +81,9 @@ for sampling in ['Oversampling', 'Undersampling']:
         result_of_split=[]
         for i in range(10):
             X_train, X_test,y_train, y_test=train_test_split(X_s,y,test_size=0.3,random_state=i)
-            lr=LogisticRegression()
+            dtc=DecisionTreeClassifier()
 
-            model1=lr.fit(X_train,y_train)
+            model1=dtc.fit(X_train,y_train)
             prediction1=model1.predict(X_test)
             #We save the score of each training split
             result_of_split.append(accuracy_score(y_test,prediction1))

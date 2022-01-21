@@ -3,7 +3,7 @@ from sklearn.feature_selection import SelectKBest, chi2
 from sklearn.feature_selection import f_classif
 from statistics import mean
 import matplotlib.pyplot as plt
-from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier 
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import VarianceThreshold
@@ -16,7 +16,7 @@ import data_manipulation as dm
 #--------------------------------------------CHI 2--------------------------------
 
 print("\n\n====== CHI 2 Feature Selection ======")
-lr=LogisticRegression(max_iter=1000)
+dtc=DecisionTreeClassifier()
 
 # we dont scale the record this time beacause chi2 method dont accept negative values (scale = 0 from data_manipulation)
 
@@ -37,9 +37,10 @@ for sampling in ['Oversampling', 'Undersampling']:
         result_of_split=[]
 
         for x in range(100):
+                dtc=DecisionTreeClassifier()
                 X_train, X_test,y_train, y_test=train_test_split(X_kbest,y,test_size=0.3,random_state=x)
                 #We train the model 
-                model1=lr.fit(X_train,y_train)
+                model1=dtc.fit(X_train,y_train)
                 prediction1=model1.predict(X_test)
                 #We save the score of eaxh training split
                 result_of_split.append(accuracy_score(y_test,prediction1))
@@ -76,7 +77,6 @@ for sampling in ['Oversampling', 'Undersampling']:
 
 #---------------------VARIANCE THRESHOLD---------------------------
 print("\n\n====== Variance Feature Selection ======")
-lr=LogisticRegression()
 
 max_acc=0
 absol_max_acc=0
@@ -99,8 +99,9 @@ for sampling in ['Oversampling', 'Undersampling']:
             #We cut out the under threshold variables
             X_train = sel.transform(X_train)
             X_test = sel.transform(X_test)
-            #We train the model 
-            model1=lr.fit(X_train,y_train)
+            #We train the model
+            dtc=DecisionTreeClassifier() 
+            model1=dtc.fit(X_train,y_train)
             prediction1=model1.predict(X_test)
             #We save the score 
             result_of_split.append(accuracy_score(y_test,prediction1))
@@ -137,7 +138,6 @@ print("\n\n====== ANOVA Feature Selection ======")
 
 for sampling in ['Oversampling', 'Undersampling']:
     X,y=dm.get_dataframe(sampling=sampling, scale="Standard")
-    lr=LogisticRegression()
 
 
     mean_value_per_k=[]
@@ -156,7 +156,8 @@ for sampling in ['Oversampling', 'Undersampling']:
         for x in range(100):
                 X_train, X_test,y_train, y_test=train_test_split(X_kbest,y,test_size=0.3,random_state=x)
                 #We train the model 
-                model1=lr.fit(X_train,y_train)
+                dtc=DecisionTreeClassifier()
+                model1=dtc.fit(X_train,y_train)
                 prediction1=model1.predict(X_test)
                 #We save the score of eaxh training split
                 result_of_split.append(accuracy_score(y_test,prediction1))
