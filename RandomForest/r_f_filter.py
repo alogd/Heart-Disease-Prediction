@@ -3,25 +3,32 @@ from sklearn.feature_selection import SelectKBest, chi2
 from sklearn.feature_selection import f_classif
 from statistics import mean
 import matplotlib.pyplot as plt
-from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import VarianceThreshold
+from sklearn.ensemble import RandomForestClassifier
 import numpy as np
 import matplotlib.pyplot as plt
-from ..data_manipulation import get_dataframe
+import data_manipulation as dm
+
+
+print("\n\n====== Random Forest Classifier ======")
+
+#KEY VALUES FOR THE RANDOM FOREST CLASSIFIER
+# n_estimators --> The amount of trees random forest constructs
+# result_of_split --> To have range on our training and test splits
 
 
 
 #--------------------------------------------CHI 2--------------------------------
 
-print("\n\n====== CHI 2 Feature Selection ======")
-lr=LogisticRegression(max_iter=1000)
+print("\n\n====== CHI2 Feature Selection ======")
+rfc=RandomForestClassifier(n_estimators=10)
 
 # we dont scale the record this time beacause chi2 method dont accept negative values (scale = 0 from data_manipulation)
 
 for sampling in ['Oversampling', 'Undersampling']:
-    X,y=get_dataframe(sampling=sampling,scale="MinMax")
+    X,y=dm.get_dataframe(sampling=sampling,scale="MinMax")
 
 
     mean_value_per_k=[]
@@ -36,17 +43,17 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         result_of_split=[]
 
-        for x in range(100):
+        for x in range(10):
                 X_train, X_test,y_train, y_test=train_test_split(X_kbest,y,test_size=0.3,random_state=x)
                 #We train the model 
-                model1=lr.fit(X_train,y_train)
+                model1=rfc.fit(X_train,y_train)
                 prediction1=model1.predict(X_test)
                 #We save the score of eaxh training split
                 result_of_split.append(accuracy_score(y_test,prediction1))
             
         #we keep only the best score from the training splits with the same k
         mean_value_per_k.append(mean(result_of_split))
-        #print(mean(result_of_split))
+        print(mean(result_of_split))
 
         
 
@@ -66,13 +73,14 @@ for sampling in ['Oversampling', 'Undersampling']:
     plt.show()
 
 
-'''
+
+
 
 
 
 #---------------------VARIANCE THRESHOLD---------------------------
 print("\n\n====== Variance Feature Selection ======")
-lr=LogisticRegression()
+rfc=RandomForestClassifier(n_estimators=10)
 
 
 for sampling in ['Oversampling', 'Undersampling']:
@@ -86,7 +94,7 @@ for sampling in ['Oversampling', 'Undersampling']:
         currentThreshold+=0.01
         result_of_split=[]
         #We do 100 different splits and save the mean accuracy value
-        for i in range(100):
+        for i in range(10):
             X_train, X_test,y_train, y_test=train_test_split(X,y,test_size=0.3,random_state=i)
             sel.fit(X_train)
 
@@ -94,7 +102,7 @@ for sampling in ['Oversampling', 'Undersampling']:
             X_train = sel.transform(X_train)
             X_test = sel.transform(X_test)
             #We train the model 
-            model1=lr.fit(X_train,y_train)
+            model1=rfc.fit(X_train,y_train)
             prediction1=model1.predict(X_test)
             #We save the score 
             result_of_split.append(accuracy_score(y_test,prediction1))
@@ -129,7 +137,7 @@ print("\n\n====== ANOVA Feature Selection ======")
 
 for sampling in ['Oversampling', 'Undersampling']:
     X,y=dm.get_dataframe(sampling=sampling, scale="Standard")
-    lr=LogisticRegression()
+    rfc=RandomForestClassifier(n_estimators=10)
 
 
     mean_value_per_k=[]
@@ -144,17 +152,17 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         result_of_split=[]
 
-        for x in range(100):
+        for x in range(10):
                 X_train, X_test,y_train, y_test=train_test_split(X_kbest,y,test_size=0.3,random_state=x)
                 #We train the model 
-                model1=lr.fit(X_train,y_train)
+                model1=rfc.fit(X_train,y_train)
                 prediction1=model1.predict(X_test)
                 #We save the score of eaxh training split
                 result_of_split.append(accuracy_score(y_test,prediction1))
             
         #we keep only the best score from the training splits with the same k
         mean_value_per_k.append(mean(result_of_split))
-        #print(mean(result_of_split))
+        print(mean(result_of_split))
         
         #here we want to save the features that performed the best score 
         if mean_value_per_k[i] > best_score :
@@ -179,7 +187,6 @@ for sampling in ['Oversampling', 'Undersampling']:
     plt.show()
     
 
-'''
 
 
 

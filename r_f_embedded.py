@@ -1,18 +1,21 @@
 from statistics import mean
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import SelectFromModel
 import matplotlib.pyplot as plt
 import data_manipulation as dm
 import numpy as np
-from sklearn.model_selection import train_test_split
 
 
-print("\n\n====== Embedded Methods Feature Selection ======")
+
+print("\n\n====== Random Forest Embedded Methods ======")
 lr=LogisticRegression()
 
-#Lasso
+
+#--------------------------------LASS0-----------------------------------
+
 print("===>Lasso Results:")
 for sampling in ['Oversampling', 'Undersampling']:
     X,y=dm.get_dataframe(sampling=sampling,scale="Standard")
@@ -58,7 +61,7 @@ for sampling in ['Oversampling', 'Undersampling']:
     plt.show()
 
 
-#Ridge
+#-------------------------------------Ridge--------------------------------------
 print("===>Ridge Results:")
 for sampling in ['Oversampling', 'Undersampling']:
     X,y=dm.get_dataframe(sampling=sampling,scale="Standard")

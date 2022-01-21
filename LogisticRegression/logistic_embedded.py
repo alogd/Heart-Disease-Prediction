@@ -6,7 +6,7 @@ from sklearn.feature_selection import SelectFromModel
 import matplotlib.pyplot as plt
 import data_manipulation as dm
 import numpy as np
-from sklearn.model_selection import train_test_split
+
 
 
 print("\n\n====== Embedded Methods Feature Selection ======")
@@ -31,7 +31,7 @@ for sampling in ['Oversampling', 'Undersampling']:
         for i in range(100):
             X_train, X_test,y_train, y_test=train_test_split(X_s,y,test_size=0.3,random_state=i)
             #print(X.columns.values[selection.get_support()])
-            lr=LogisticRegression(max_iter=1000)
+            lr=LogisticRegression()
 
             model1=lr.fit(X_train,y_train)
             prediction1=model1.predict(X_test)
@@ -74,10 +74,10 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         #Train model with the results
         result_of_split=[]
-        for i in range(100):
+        for i in range(10):
             X_train, X_test,y_train, y_test=train_test_split(X_s,y,test_size=0.3,random_state=i)
             #print(X.columns.values[selection.get_support()])
-            lr=LogisticRegression(max_iter=1000)
+            lr=LogisticRegression()
 
             model1=lr.fit(X_train,y_train)
             prediction1=model1.predict(X_test)

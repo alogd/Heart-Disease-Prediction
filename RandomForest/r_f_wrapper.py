@@ -1,17 +1,17 @@
 from mlxtend.feature_selection import ExhaustiveFeatureSelector as EFS
 from mlxtend.feature_selection import SequentialFeatureSelector as SFS
-from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 import data_manipulation as dm
 
-lr=LogisticRegression()
+
+print("\n\n====== Random Forest Classifier Wrapper Methods ======")
+rfc = RandomForestClassifier(n_estimators=50)
 
 
 X,y=dm.get_dataframe( sampling='Oversampling', scale="Standard")
 
-print('\n\n====== Logistic Regression Results ======')
-
 #Step Forward Feature Selection / Wrapper
-sfs1 = SFS(LogisticRegression(),
+sfs1 = SFS(rfc,
          k_features=(1,10),
          forward=True,
          floating=False,
@@ -24,7 +24,7 @@ print('Selected features:',sfs1.k_feature_names_)
 
 
 #Step Backward Feature Selection / Wrapper
-sfs1 = SFS(LogisticRegression(),
+sfs1 = SFS(rfc,
          k_features=(1,10),
          forward=False,
          floating=False,
@@ -38,7 +38,7 @@ print('Selected features:',sfs1.k_feature_names_)
 
 
 #Exhaustive Feature Selection / Wrapper 
-efs = EFS(LogisticRegression(),
+efs = EFS(rfc,
            min_features=1,
            max_features=3,
            scoring='accuracy',
@@ -56,7 +56,7 @@ print('Selected features:',efs.best_feature_names_)
 X,y=dm.get_dataframe(sampling='Undersampling', scale="Standard")
 
 #Step Forward Feature Selection / Wrapper
-sfs1 = SFS(LogisticRegression(),
+sfs1 = SFS(rfc,
          k_features=(1,10),
          forward=True,
          floating=False,
@@ -68,7 +68,7 @@ print('Selected features:',sfs1.k_feature_names_)
 
 
 #Step Backward Feature Selection / Wrapper
-sfs1 = SFS(LogisticRegression(),
+sfs1 = SFS(rfc,
          k_features=(1,10),
          forward=False,
          floating=False,
@@ -81,7 +81,7 @@ print('Selected features:',sfs1.k_feature_names_)
 
 
 #Exhaustive Feature Selection / Wrapper 
-efs = EFS(LogisticRegression(),
+efs = EFS(rfc,
            min_features=1,
            max_features=3,
            scoring='accuracy',
