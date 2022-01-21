@@ -12,6 +12,7 @@ import numpy as np
 
 print("\n\n====== Random Forest Embedded Methods ======")
 lr=LogisticRegression()
+rfc=RandomForestClassifier(n_estimators=10)
 
 
 #--------------------------------LASS0-----------------------------------
@@ -31,12 +32,12 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         #Train model with the results
         result_of_split=[]
-        for i in range(100):
+        for i in range(10):
             X_train, X_test,y_train, y_test=train_test_split(X_s,y,test_size=0.3,random_state=i)
             #print(X.columns.values[selection.get_support()])
-            lr=LogisticRegression(max_iter=1000)
+            rfc=RandomForestClassifier(n_estimators=10)
 
-            model1=lr.fit(X_train,y_train)
+            model1=rfc.fit(X_train,y_train)
             prediction1=model1.predict(X_test)
             #We save the score of each training split
             result_of_split.append(accuracy_score(y_test,prediction1))
@@ -77,12 +78,12 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         #Train model with the results
         result_of_split=[]
-        for i in range(100):
+        for i in range(10):
             X_train, X_test,y_train, y_test=train_test_split(X_s,y,test_size=0.3,random_state=i)
             #print(X.columns.values[selection.get_support()])
-            lr=LogisticRegression(max_iter=1000)
+            rfc=RandomForestClassifier(n_estimators=10)
 
-            model1=lr.fit(X_train,y_train)
+            model1=rfc.fit(X_train,y_train)
             prediction1=model1.predict(X_test)
             #We save the score of each training split
             result_of_split.append(accuracy_score(y_test,prediction1))
