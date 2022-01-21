@@ -10,7 +10,6 @@ import numpy as np
 
 
 print("\n\n====== Embedded Methods Feature Selection ======")
-lr=LogisticRegression()
 
 #Lasso
 print("===>Lasso Results:")
