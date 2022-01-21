@@ -1,7 +1,7 @@
 from mlxtend.feature_selection import ExhaustiveFeatureSelector as EFS
 from mlxtend.feature_selection import SequentialFeatureSelector as SFS
 from sklearn import svm
-import data_manipulation as dm
+import DataManipulation.data_manipulation as dm
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from statistics import mean

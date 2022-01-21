@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import SelectFromModel
 import matplotlib.pyplot as plt
-import data_manipulation as dm
+import DataManipulation.data_manipulation as dm
 import numpy as np
 
 

@@ -1,13 +1,13 @@
 from mlxtend.feature_selection import ExhaustiveFeatureSelector as EFS
 from mlxtend.feature_selection import SequentialFeatureSelector as SFS
-from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
 import DataManipulation.data_manipulation as dm
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from statistics import mean
 
 
-print('\n\n====== Logistic Regression Results ======')
+print('\n\n====== Naive Bayes Results ======')
 
 for sampling in ['Oversampling', 'Undersampling']:
     X,y=dm.get_dataframe(sampling=sampling,scale="Standard")
@@ -15,7 +15,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
 
     #Step Forward Feature Selection / Wrapper
-    sfs1 = SFS(LogisticRegression(),
+    sfs1 = SFS(GaussianNB(),
             k_features=(1,10),
             forward=True,
             floating=False,
@@ -28,8 +28,8 @@ for sampling in ['Oversampling', 'Undersampling']:
     result_of_split=[]
     for i in range(500):
         X_train, X_test,y_train, y_test=train_test_split(X_s,y,test_size=0.3,random_state=i)
-        lr=LogisticRegression()
-        model=lr.fit(X_train,y_train)
+        gnb=GaussianNB()
+        model=gnb.fit(X_train,y_train)
         prediction=model.predict(X_test)
         result_of_split.append(accuracy_score(y_test,prediction))
 
@@ -40,7 +40,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
 
     #Step Backward Feature Selection / Wrapper
-    sfs1 = SFS(LogisticRegression(),
+    sfs1 = SFS(GaussianNB(),
             k_features=(1,10),
             forward=False,
             floating=False,
@@ -53,8 +53,8 @@ for sampling in ['Oversampling', 'Undersampling']:
     result_of_split=[]
     for i in range(500):
         X_train, X_test,y_train, y_test=train_test_split(X_s,y,test_size=0.3,random_state=i)
-        lr=LogisticRegression()
-        model=lr.fit(X_train,y_train)
+        gnb=GaussianNB()
+        model=gnb.fit(X_train,y_train)
         prediction=model.predict(X_test)
         result_of_split.append(accuracy_score(y_test,prediction))
 
@@ -65,7 +65,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
 
     #Exhaustive Feature Selection / Wrapper 
-    efs = EFS(LogisticRegression(),
+    efs = EFS(GaussianNB(),
             min_features=1,
             max_features=7,
             scoring='accuracy',
@@ -79,8 +79,8 @@ for sampling in ['Oversampling', 'Undersampling']:
     result_of_split=[]
     for i in range(500):
         X_train, X_test,y_train, y_test=train_test_split(X_s,y,test_size=0.3,random_state=i)
-        lr=LogisticRegression()
-        model=lr.fit(X_train,y_train)
+        gnb=GaussianNB()
+        model=gnb.fit(X_train,y_train)
         prediction=model.predict(X_test)
         result_of_split.append(accuracy_score(y_test,prediction))
 

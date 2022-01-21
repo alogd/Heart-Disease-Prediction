@@ -15,7 +15,7 @@ all_columns= ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach
 def get_dataframe(columns =all_columns, sampling = "",scale=""):
     
     #Open file and read data then drop not needed columns
-    df=pd.read_csv("dataset.csv")
+    df=pd.read_csv("DataManipulation/dataset.csv")
 
     for col in df.columns:
         if col=='target':
@@ -64,3 +64,5 @@ def get_dataframe(columns =all_columns, sampling = "",scale=""):
     return X_sampled, y_sampled
 
 
+df=get_dataframe()
+print(df)

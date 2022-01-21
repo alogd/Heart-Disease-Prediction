@@ -9,7 +9,7 @@ from sklearn.feature_selection import VarianceThreshold
 from sklearn import svm
 import numpy as np
 import matplotlib.pyplot as plt
-import data_manipulation as dm
+import DataManipulation.data_manipulation as dm
 
 
 print("\n\n====== SVM Classifier ======")

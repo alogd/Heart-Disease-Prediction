@@ -1,7 +1,7 @@
 from mlxtend.feature_selection import ExhaustiveFeatureSelector as EFS
 from mlxtend.feature_selection import SequentialFeatureSelector as SFS
 from sklearn.ensemble import RandomForestClassifier
-import data_manipulation as dm
+import DataManipulation.data_manipulation as dm
 
 
 print("\n\n====== Random Forest Classifier Wrapper Methods ======")

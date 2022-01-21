@@ -3,7 +3,7 @@ from mlxtend.feature_selection import SequentialFeatureSelector as SFS
 from sklearn.tree import DecisionTreeClassifier 
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-import data_manipulation as dm
+import DataManipulation.data_manipulation as dm
 from statistics import mean
 
 
