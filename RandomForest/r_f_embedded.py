@@ -23,6 +23,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
     accuracy_per_C=[]
     max_acc=0
+    absol_max_acc=0
     for C in range(1,50):
         #Find best features through Lasso method
         selection = SelectFromModel(LogisticRegression(penalty='l1', C=C/50, solver='liblinear'))
@@ -46,11 +47,13 @@ for sampling in ['Oversampling', 'Undersampling']:
         if max_acc<accuracy_per_C[-1]:
             max_acc=accuracy_per_C[-1]
             best_features=X.columns.values[selection.get_support()]
+            absol_max_acc=max(result_of_split)
 
     max_acc= max(accuracy_per_C)
     C_best=(accuracy_per_C.index(max_acc)+1)/50
     best_result=f'Max accuracy: {max_acc} at C= {C_best} with {sampling}'
     print('=>',best_result)
+    print("Max accuracy for best C: ", absol_max_acc)
     print("Selected Features: ",best_features)
 
     k_values=np.arange(0.02, 1, 0.02)
@@ -69,6 +72,8 @@ for sampling in ['Oversampling', 'Undersampling']:
 
     accuracy_per_C=[]
     max_acc=0
+    absol_max_acc=0
+
     for C in range(1,50):
         #Find best features through Lasso method
         selection = SelectFromModel(LogisticRegression(penalty='l2', C=C/50))
@@ -92,11 +97,14 @@ for sampling in ['Oversampling', 'Undersampling']:
         if max_acc<accuracy_per_C[-1]:
             max_acc=accuracy_per_C[-1]
             best_features=X.columns.values[selection.get_support()]
+            absol_max_acc=max(result_of_split)
+
 
     max_acc= max(accuracy_per_C)
     C_best=(accuracy_per_C.index(max_acc)+1)/50
     best_result=f'Max accuracy: {max_acc} at C= {C_best} with {sampling}'
     print('=>',best_result)
+    print("Max accuracy for best C: ", absol_max_acc)
     print("Selected Features: ",best_features)
 
     k_values=np.arange(0.02, 1, 0.02)

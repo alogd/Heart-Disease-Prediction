@@ -8,7 +8,6 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import VarianceThreshold
 import numpy as np
-import matplotlib.pyplot as plt
 import DataManipulation.data_manipulation as dm
 
 
@@ -177,7 +176,7 @@ for sampling in ['Oversampling', 'Undersampling']:
     max_acc=max(mean_value_per_k)
     best_result=f'Max Accuracy: {round(max_acc,3)}  with  {mean_value_per_k.index(max_acc) + 1} features and {sampling}' 
     print('\n=>',best_result)
-    print('Absolute max accuracy: ', absol_max_acc)
+    print('Absolute max accuracy: ', absol_best_score)
 
     print('Selected Features: ', best_features)
 

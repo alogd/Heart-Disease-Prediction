@@ -99,7 +99,6 @@ for sampling in ['Oversampling', 'Undersampling']:
     best_result=f'Max accuracy: {max_acc} at C= {C_best} with {sampling}'
     print('\n=>',best_result)
     print("Max accuracy for best C: ", absol_max_acc)
-
     print("Selected Features: ",best_features)
 
     k_values=np.arange(0.02, 1, 0.02)

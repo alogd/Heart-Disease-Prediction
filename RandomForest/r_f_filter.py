@@ -8,7 +8,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.ensemble import RandomForestClassifier
 import numpy as np
-import matplotlib.pyplot as plt
 import DataManipulation.data_manipulation as dm
 
 
@@ -32,7 +31,8 @@ for sampling in ['Oversampling', 'Undersampling']:
 
 
     mean_value_per_k=[]
-
+    max_acc=0
+    absol_max_acc=0
 
     # #We try all the values for k between 1 and 15 to find witch amount of best_features has the best accuracy
     for i in range(15) :
@@ -51,9 +51,13 @@ for sampling in ['Oversampling', 'Undersampling']:
                 #We save the score of eaxh training split
                 result_of_split.append(accuracy_score(y_test,prediction1))
             
-        #we keep only the best score from the training splits with the same k
+        #We keep only the best score from the training splits with the same k
         mean_value_per_k.append(mean(result_of_split))
-        print(mean(result_of_split))
+        if max_acc<mean_value_per_k[-1]:
+            max_acc=mean_value_per_k[-1]
+            absol_max_acc=max(result_of_split)
+        #print(mean(result_of_split))
+
 
         
 
@@ -61,6 +65,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
     best_result=f'Max Accuracy: {round(max_acc,3)}  with  {mean_value_per_k.index(max_acc) + 1} features and {sampling}' 
     print('\n=>',best_result)
+    print("Absolute max accuracy: ", absol_max_acc)
     best_features = X.columns.values[(fvalue_selector.get_support())]
     print('Selected Features: ', best_features)
 
@@ -89,6 +94,7 @@ for sampling in ['Oversampling', 'Undersampling']:
     currentThreshold=0
     mean_value_per_threshold=[]
     max_acc=0
+    absol_max_acc=0
     while currentThreshold<=1:
         sel = VarianceThreshold(threshold=currentThreshold)
         currentThreshold+=0.01
@@ -111,13 +117,16 @@ for sampling in ['Oversampling', 'Undersampling']:
         if max_acc<mean_value_per_threshold[-1]:
             max_acc=mean_value_per_threshold[-1]
             best_features=X.columns.values[(sel.get_support())]
+            absol_max_acc=max(result_of_split)
 
     #Plot Threshold and Accuracy Coorelation and print best result 
     th_values=np.arange(0.0, 1.0, 0.01)
     max_acc_pos=mean_value_per_threshold.index(max_acc)
     best_result=f'Max Accuracy: {round(max_acc,3)}  at Threshold: {max_acc_pos/100} with {sampling}' 
     print('\n=>',best_result)
+    print('Absolute max accuracy: ', absol_max_acc)
     print('Selected Features: ', best_features)
+    
     plt.plot(th_values, mean_value_per_threshold)
     plt.title(best_result)
     plt.suptitle('Threshold and Accuracy Coorelation')
@@ -143,6 +152,7 @@ for sampling in ['Oversampling', 'Undersampling']:
     mean_value_per_k=[]
     best_features = []
     best_score = 0
+    absol_best_score=0
     # #We try all the values for k between 1 and 15 to find witch amount of best_features has the best accuracy
     for i in range(15) :
         fvalue_selector = SelectKBest(f_classif, k=(i+1))
@@ -168,6 +178,8 @@ for sampling in ['Oversampling', 'Undersampling']:
         if mean_value_per_k[i] > best_score :
             best_score = mean_value_per_k[i]
             best_features = X.columns.values[(fvalue_selector.get_support())]
+            absol_best_score=max(result_of_split)
+
 
 
         
@@ -175,6 +187,7 @@ for sampling in ['Oversampling', 'Undersampling']:
     max_acc=max(mean_value_per_k)
     best_result=f'Max Accuracy: {round(max_acc,3)}  with  {mean_value_per_k.index(max_acc) + 1} features and {sampling}' 
     print('\n=>',best_result)
+    print('Absolute max accuracy: ', absol_best_score)
     print('Selected Features: ', best_features)
 
 

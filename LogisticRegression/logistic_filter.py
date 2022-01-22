@@ -8,7 +8,6 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import VarianceThreshold
 import numpy as np
-import matplotlib.pyplot as plt
 import DataManipulation.data_manipulation as dm
 
 
@@ -78,8 +77,6 @@ for sampling in ['Oversampling', 'Undersampling']:
 print("\n\n====== Variance Feature Selection ======")
 lr=LogisticRegression()
 
-max_acc=0
-absol_max_acc=0
 
 for sampling in ['Oversampling', 'Undersampling']:
     X,y=dm.get_dataframe(sampling=sampling, scale="Standard")
@@ -87,6 +84,7 @@ for sampling in ['Oversampling', 'Undersampling']:
     currentThreshold=0
     mean_value_per_threshold=[]
     max_acc=0
+    absol_max_acc=0
     while currentThreshold<=1:
         sel = VarianceThreshold(threshold=currentThreshold)
         currentThreshold+=0.01
@@ -118,6 +116,7 @@ for sampling in ['Oversampling', 'Undersampling']:
     print('\n=>',best_result)
     print('Absolute max accuracy: ', absol_max_acc)
     print('Selected Features: ', best_features)
+    
     plt.plot(th_values, mean_value_per_threshold)
     plt.title(best_result)
     plt.suptitle('Threshold and Accuracy Coorelation')
@@ -177,8 +176,7 @@ for sampling in ['Oversampling', 'Undersampling']:
     max_acc=max(mean_value_per_k)
     best_result=f'Max Accuracy: {round(max_acc,3)}  with  {mean_value_per_k.index(max_acc) + 1} features and {sampling}' 
     print('\n=>',best_result)
-    print('Absolute max accuracy: ', absol_max_acc)
-
+    print('Absolute max accuracy: ', absol_best_score)
     print('Selected Features: ', best_features)
 
 
