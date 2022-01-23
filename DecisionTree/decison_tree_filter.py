@@ -8,6 +8,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import VarianceThreshold
 import numpy as np
 import matplotlib.pyplot as plt
+import sys, os
+sys.path.append(os.getcwd())
 import DataManipulation.data_manipulation as dm
 
 

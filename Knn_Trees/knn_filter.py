@@ -8,8 +8,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.neighbors import KNeighborsClassifier
 import numpy as np
+import sys, os
+sys.path.append(os.getcwd())
 import DataManipulation.data_manipulation as dm
-
 
 print("\n\n====== KNN Classifier ======")
 

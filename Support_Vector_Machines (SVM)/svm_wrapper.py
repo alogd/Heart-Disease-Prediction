@@ -1,11 +1,12 @@
 from mlxtend.feature_selection import ExhaustiveFeatureSelector as EFS
 from mlxtend.feature_selection import SequentialFeatureSelector as SFS
 from sklearn import svm
-import DataManipulation.data_manipulation as dm
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from statistics import mean
-
+import sys, os
+sys.path.append(os.getcwd())
+import DataManipulation.data_manipulation as dm
 
 print('\n\n====== SVM Regression Results ======')
 

@@ -5,8 +5,12 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import SelectFromModel
 import matplotlib.pyplot as plt
-import DataManipulation.data_manipulation as dm
 import numpy as np
+import sys, os
+sys.path.append(os.getcwd())
+import DataManipulation.data_manipulation as dm
+
+
 
 
 

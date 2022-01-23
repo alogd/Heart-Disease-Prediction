@@ -64,5 +64,3 @@ def get_dataframe(columns =all_columns, sampling = "",scale=""):
     return X_sampled, y_sampled
 
 
-df=get_dataframe()
-print(df)

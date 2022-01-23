@@ -3,8 +3,10 @@ from mlxtend.feature_selection import SequentialFeatureSelector as SFS
 from sklearn.tree import DecisionTreeClassifier 
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-import DataManipulation.data_manipulation as dm
 from statistics import mean
+import sys, os
+sys.path.append(os.getcwd())
+import DataManipulation.data_manipulation as dm
 
 
 print('\n\n====== Decision Tree Results ======')
