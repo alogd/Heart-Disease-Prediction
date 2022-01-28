@@ -13,6 +13,24 @@ rus = RandomUnderSampler()
 all_columns= ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal', 'target']
 
 def get_dataframe(columns =all_columns, sampling = "",scale=""):
+    '''
+    This is a function that returns the desired dataset from the csv file into two variables (the independent  and dependent variables). 
+    
+    Parameters
+    ----------
+    columns: 
+        Choose any subset of the 13 features. 'target' variable is always selected. 
+        Default value is all features.
+    
+    sampling: 
+        Choose `Oversampling` for RandomOverSampler or `Undersampling` for RandomUnderSampler from imblearn module. 
+        Default is no sampling.
+
+    scale: 
+        Choose `Standard` for StandardScaler or `MinMax` for MinMaxScaler from sklearn module. 
+        Default is no scaling.
+
+    '''
     
     #Open file and read data then drop not needed columns
     df=pd.read_csv("DataManipulation/dataset.csv")
