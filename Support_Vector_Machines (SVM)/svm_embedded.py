@@ -11,7 +11,7 @@ sys.path.append(os.getcwd())
 import DataManipulation.data_manipulation as dm
 
 
-print("\n\n====== Random Forest Embedded Methods ======")
+print("\n\n====== SVM Embedded Methods ======")
 lr=LogisticRegression()
 clf = svm.SVC()
 
@@ -33,7 +33,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         #Train model with the results
         result_of_split=[]
-        for i in range(10):
+        for i in range(100):
             X_train, X_test,y_train, y_test=train_test_split(X_s,y,test_size=0.3,random_state=i)
             #print(X.columns.values[selection.get_support()])
             clf = svm.SVC()
@@ -84,7 +84,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         #Train model with the results
         result_of_split=[]
-        for i in range(10):
+        for i in range(100):
             X_train, X_test,y_train, y_test=train_test_split(X_s,y,test_size=0.3,random_state=i)
             #print(X.columns.values[selection.get_support()])
             clf = svm.SVC()

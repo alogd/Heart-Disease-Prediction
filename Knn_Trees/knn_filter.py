@@ -41,7 +41,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         result_of_split=[]
 
-        for x in range(10):
+        for x in range(100):
                 X_train, X_test,y_train, y_test=train_test_split(X_kbest,y,test_size=0.3,random_state=x)
                 #We train the model 
                 model1=knn_model.fit(X_train,y_train)
@@ -157,7 +157,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         result_of_split=[]
 
-        for x in range(10):
+        for x in range(100):
                 X_train, X_test,y_train, y_test=train_test_split(X_kbest,y,test_size=0.3,random_state=x)
                 #We train the model 
                 model1=knn_model.fit(X_train,y_train)
@@ -167,7 +167,7 @@ for sampling in ['Oversampling', 'Undersampling']:
             
         #we keep only the best score from the training splits with the same k
         mean_value_per_k.append(mean(result_of_split))
-        print(mean(result_of_split))
+        #print(mean(result_of_split))
         
         #here we want to save the features that performed the best score 
         if mean_value_per_k[i] > best_score :

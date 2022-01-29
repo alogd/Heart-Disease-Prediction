@@ -23,7 +23,7 @@ print("\n\n====== Random Forest Classifier ======")
 #--------------------------------------------CHI 2--------------------------------
 
 print("\n\n====== CHI2 Feature Selection ======")
-rfc=RandomForestClassifier(n_estimators=10)
+rfc=RandomForestClassifier()
 
 # we dont scale the record this time beacause chi2 method dont accept negative values (scale = 0 from data_manipulation)
 
@@ -44,7 +44,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         result_of_split=[]
 
-        for x in range(10):
+        for x in range(100):
                 X_train, X_test,y_train, y_test=train_test_split(X_kbest,y,test_size=0.3,random_state=x)
                 #We train the model 
                 model1=rfc.fit(X_train,y_train)
@@ -86,7 +86,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
 #---------------------VARIANCE THRESHOLD---------------------------
 print("\n\n====== Variance Feature Selection ======")
-rfc=RandomForestClassifier(n_estimators=10)
+rfc=RandomForestClassifier()
 
 
 for sampling in ['Oversampling', 'Undersampling']:
@@ -101,7 +101,7 @@ for sampling in ['Oversampling', 'Undersampling']:
         currentThreshold+=0.01
         result_of_split=[]
         #We do 100 different splits and save the mean accuracy value
-        for i in range(10):
+        for i in range(100):
             X_train, X_test,y_train, y_test=train_test_split(X,y,test_size=0.3,random_state=i)
             sel.fit(X_train)
 
@@ -147,7 +147,7 @@ print("\n\n====== ANOVA Feature Selection ======")
 
 for sampling in ['Oversampling', 'Undersampling']:
     X,y=dm.get_dataframe(sampling=sampling, scale="Standard")
-    rfc=RandomForestClassifier(n_estimators=10)
+    rfc=RandomForestClassifier()
 
 
     mean_value_per_k=[]
@@ -163,7 +163,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         result_of_split=[]
 
-        for x in range(10):
+        for x in range(100):
                 X_train, X_test,y_train, y_test=train_test_split(X_kbest,y,test_size=0.3,random_state=x)
                 #We train the model 
                 model1=rfc.fit(X_train,y_train)

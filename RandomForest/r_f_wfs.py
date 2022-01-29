@@ -11,7 +11,7 @@ import DataManipulation.data_manipulation as dm
 
 
 print("\n\n====== Random Forest Plain ======\n\n")
-rfc=RandomForestClassifier(n_estimators=10)
+rfc=RandomForestClassifier()
 
 
 for sampling in ['Oversampling', 'Undersampling']:

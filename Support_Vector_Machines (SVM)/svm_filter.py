@@ -41,7 +41,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         result_of_split=[]
 
-        for x in range(10):
+        for x in range(100):
                 X_train, X_test,y_train, y_test=train_test_split(X_kbest,y,test_size=0.3,random_state=x)
                 #We train the model 
                 model1=clf.fit(X_train,y_train)
@@ -161,7 +161,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         result_of_split=[]
 
-        for x in range(10):
+        for x in range(100):
                 X_train, X_test,y_train, y_test=train_test_split(X_kbest,y,test_size=0.3,random_state=x)
                 #We train the model 
                 model1=clf.fit(X_train,y_train)

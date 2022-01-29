@@ -16,7 +16,7 @@ import DataManipulation.data_manipulation as dm
 #--------------------------------------------CHI 2--------------------------------
 
 print("\n\n====== CHI 2 Feature Selection ======")
-lr=LogisticRegression(max_iter=1000)
+lr=LogisticRegression()
 
 # we dont scale the record this time beacause chi2 method dont accept negative values (scale = 0 from data_manipulation)
 

@@ -34,7 +34,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         #Train model with the results
         result_of_split=[]
-        for i in range(10):
+        for i in range(100):
             X_train, X_test,y_train, y_test=train_test_split(X_s,y,test_size=0.3,random_state=i)
             #print(X.columns.values[selection.get_support()])
             knn_model = KNeighborsClassifier()
@@ -87,7 +87,7 @@ for sampling in ['Oversampling', 'Undersampling']:
 
         #Train model with the results
         result_of_split=[]
-        for i in range(10):
+        for i in range(100):
             X_train, X_test,y_train, y_test=train_test_split(X_s,y,test_size=0.3,random_state=i)
             #print(X.columns.values[selection.get_support()])
             knn_model = KNeighborsClassifier()
